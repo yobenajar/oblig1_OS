@@ -1,0 +1,36 @@
+Verktøyene som ble brukt til kvalitetssikring ble funnet på:
+https://github.com/NTNUcourses/opsys/blob/master/README-C-code-quality.txt  
+
+eksempelfil: 4-5-b.c
+
+
+1. gcc - Reagerer dersom det er noen semantiske eller syntaktiske feil med koden.
+
+	Installering: Allerede installert på Ubuntu og OSX
+	Kjøring av gcc: gcc -Wall 4-5-b.c
+					- gcc -Wall -pthread 4-5-b.c, dersom man har tråder. 
+
+2. cppcheck - Et statisk analyse verktøy som avdekker feil som kompilatorer vanligvis ikke klarer å avdekke.
+
+	Installering av cppcheck: apt-get install cppcheck
+	Kjøring av cppcheck: cppcheck --enable=all ./4-5-b.c
+
+	Feilmelding jeg fikk:
+	Finner ikke alle include filer, men ikke på grunn av koden.   
+
+3. clang-tidy-5.0 - Et linter verktøy brukt til å avdekke feil angående koden samt feil med oppsett.   
+	
+	Installering: apt-get install clang-tidy-5.0
+	Kjøring av clang-tidy: clang-tidy-5.0 -checks='*' 4-5-b.c -- -std=c11
+
+	Feilmelding jeg fikk:
+	Reagerer på headerfil: <stddef.h>, men dette er ikke på grunn av koden.
+
+
+4. valgrind - Verktøy brukt for å sjekke dynamiske aspekter ved koden. 
+	
+	Installering: apt-get install valgrind
+	Kjøring av valgrind: - valgrind --leak-check=yes ./4-5-b
+							Sjekker om allokert minne blir frigitt.
+						 - valgrind --tool=helgrind ./4-5-b
+						 	Tester om API blir brukt på riktig måte.
